@@ -9,15 +9,24 @@ find_package(Protobuf REQUIRED)
 
 set(SRCS src/main.cpp
          src/SineWaveSensor.cpp
+         src/EventBus.cpp
+         src/EventDispatcher.cpp
 
          # Generated
          generated/addressbook.pb.cc
+         generated/Sensor.pb.cc
+         generated/SensorType.pb.cc
 )
 
 set(HDRS include/SineWaveSensor.h
+         include/EventBus.h
+         include/EventDispatcher.h
+         include/Eventing.h
 
          # Generated
-         generated/addressbook.pb.h)
+         generated/addressbook.pb.h
+         generated/Sensor.pb.h
+         generated/SensorType.pb.h)
 
 add_executable(${PROJECT_NAME} ${SRCS})
 

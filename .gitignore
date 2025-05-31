@@ -33,3 +33,6 @@
 
 # Generated class files
 /generated
+
+# Builds
+/build

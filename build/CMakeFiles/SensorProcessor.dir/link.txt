@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/SensorProcessor.dir/src/main.cpp.o CMakeFiles/SensorProcessor.dir/src/SineWaveSensor.cpp.o CMakeFiles/SensorProcessor.dir/generated/addressbook.pb.cc.o -o SensorProcessor  /usr/lib/x86_64-linux-gnu/libprotobuf.so -lzmq

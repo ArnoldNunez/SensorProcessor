@@ -6,5 +6,5 @@ then
 mkdir generated
 fi
 
-protoc -I=protos --cpp_out=generated protos/addressbook.proto
+protoc -I=protos --cpp_out=generated protos/*.proto
 echo "Generation complete!"

@@ -1,7 +1,0 @@
-/home/build-node/SensorProcessor/build/CMakeFiles/SensorProcessor.dir
-/home/build-node/SensorProcessor/build/CMakeFiles/edit_cache.dir
-/home/build-node/SensorProcessor/build/CMakeFiles/rebuild_cache.dir
-/home/build-node/SensorProcessor/build/CMakeFiles/list_install_components.dir
-/home/build-node/SensorProcessor/build/CMakeFiles/install.dir
-/home/build-node/SensorProcessor/build/CMakeFiles/install/local.dir
-/home/build-node/SensorProcessor/build/CMakeFiles/install/strip.dir

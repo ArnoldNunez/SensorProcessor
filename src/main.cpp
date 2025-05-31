@@ -4,9 +4,13 @@
 #include <string>
 
 #include "addressbook.pb.h"
+#include "EventBus.h"
+#include "Eventing.h"
 
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
+
+CoreMessaging::EventBus eventBus;
 
 void doZeroMqStuff()
 {
@@ -153,19 +157,32 @@ void testClientPolling()
     {
         zmq::message_t message;
         zmq::poll(&items[0], numSockets, std::chrono::milliseconds{-1});
-
+        
         if (items[0].revents & ZMQ_POLLIN)
         {
-            // process message
-            tutorial::Person p = tutorial::Person();
-            p.ParseFromArray(message.data(), message.size());
-            std::cout << p.DebugString() << std::endl;
+            // Grab data from the socket
+            zmq::recv_result_t result = sock.recv(message, zmq::recv_flags::none);
+            if (result)
+            {
+                // std::cout << "Processing message" << std::endl;
+                // process message
+                tutorial::Person p = tutorial::Person();
+                p.ParseFromArray(message.data(), message.size());
+                std::cout << p.DebugString() << std::endl;
+
+                eventBus.processMessage(p);
+            }
         }
+
+        // TODO: Throttle this thread better.
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
+    std::cout << "Comms Exiting..." << std::endl;
     zmq_close(sock);
     zmq_ctx_term((void*)context);
 }
+
 
 
 int main(int argc, char* argv[])
@@ -186,8 +203,14 @@ int main(int argc, char* argv[])
     // phoneNumber->set_type(tutorial::Person::PHONE_TYPE_HOME);
     // std::cout << person.DebugString() << std::endl;
 
+    // Register message types with the event bus
+    std::cout << "Main: typeid:" << typeid(tutorial::Person).name() << std::endl;
+    eventBus.registerTypeWithEvent(typeid(tutorial::Person),
+        CoreMessaging::EventID::LOGIN_REQUEST);
+
     // doZeroMqStuff();
     // testRealClient();
-    testRealClientFrames();
+    // testRealClientFrames();
+    testClientPolling();
     return 0;
 }
