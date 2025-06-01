@@ -1,3 +1,9 @@
+/*
+ * Author: Arnold Nunez
+ * Project: SensorProcessor
+ * Module: SensorProcessorService
+ */
+
 #include <chrono>
 #include <iostream>
 #include <string>

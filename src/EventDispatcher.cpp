@@ -1,3 +1,8 @@
+/*
+ * Author: Arnold Nunez
+ * Project: SensorProcessor
+ * Module: Communication
+ */
 
 #include "EventDispatcher.h"
 

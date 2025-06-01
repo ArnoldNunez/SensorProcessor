@@ -8,6 +8,7 @@ project(SensorProcessor VERSION 1.0)
 find_package(Protobuf REQUIRED)
 
 set(SRCS src/main.cpp
+         src/CoreApplication.cpp
          src/SineWaveSensor.cpp
          src/EventBus.cpp
          src/EventDispatcher.cpp
@@ -18,7 +19,8 @@ set(SRCS src/main.cpp
          generated/SensorType.pb.cc
 )
 
-set(HDRS include/SineWaveSensor.h
+set(HDRS include/CoreApplication.h
+         include/SineWaveSensor.h
          include/EventBus.h
          include/EventDispatcher.h
          include/Eventing.h

@@ -1,3 +1,9 @@
+/*
+ * Author: Arnold Nunez
+ * Project: SensorProcessor
+ * Module: Communication
+ */
+
 #ifndef EVENT_BUS_H
 #define EVENT_BUS_H
 

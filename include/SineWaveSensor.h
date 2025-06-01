@@ -1,3 +1,8 @@
+/*
+ * Author: Arnold Nunez
+ * Project: SensorProcessor
+ * Module: IOLayer
+ */
 
 #ifndef SINE_WAVE_SENSOR_H
 #define SINE_WAVE_SENSOR_H

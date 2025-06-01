@@ -1,3 +1,9 @@
+/*
+ * Author: Arnold Nunez
+ * Project: SensorProcessor
+ * Module: Communication
+ */
+
 #ifndef EVENTING_H
 #define EVENTING_H
 
