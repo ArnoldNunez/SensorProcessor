@@ -4,26 +4,24 @@
 #include <thread>
 #include <vector>
 
-namespace CoreMessaging
-{
-class EventDispatcher
-{
-public:
-    /**
-     * Constructor
-     */
-    EventDispatcher();
+namespace CoreMessaging {
+class EventDispatcher {
+ public:
+  /**
+   * Constructor
+   */
+  EventDispatcher();
 
-    /**
-     * Destructor.
-     */
-    ~EventDispatcher();
+  /**
+   * Destructor.
+   */
+  ~EventDispatcher();
 
-    template<typename T>
-    void Dispatch(const T&);
+  template <typename T>
+  void Dispatch(const T&);
 
-private:
+ private:
 };
-}
+}  // namespace CoreMessaging
 
-#endif // EVENT_BUS_H
+#endif  // EVENT_BUS_H

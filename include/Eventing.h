@@ -1,142 +1,127 @@
 #ifndef EVENTING_H
 #define EVENTING_H
 
-#include "addressbook.pb.h"
-
 #include <thread>
 #include <vector>
 
-namespace CoreMessaging
-{
+#include "addressbook.pb.h"
+
+namespace CoreMessaging {
 /**
  * Enumeration of all the supported event ids.
  */
 enum EventID {
-    UNKNOWN = 0,
-    CLIENT_CONNECT_REQUEST = 1,
-    LOGIN_REQUEST = 2,
+  UNKNOWN = 0,
+  CLIENT_CONNECT_REQUEST = 1,
+  LOGIN_REQUEST = 2,
 };
-
 
 /**
  * Base class for core messaging events.
  */
-class IEvent
-{
-public:
-    virtual ~IEvent() {}
+class IEvent {
+ public:
+  virtual ~IEvent() {}
 
-    int getEventId() const
-    {
-        return mEventID;
-    }
+  int getEventId() const { return mEventID; }
 
-protected:
-    IEvent() : mEventID(0) {}
-    IEvent(int eventId) : mEventID(eventId) {}
+ protected:
+  IEvent() : mEventID(0) {}
+  IEvent(int eventId) : mEventID(eventId) {}
 
-private:
-    int mEventID;
+ private:
+  int mEventID;
 };
 
 /**
  * Event for a login request.
  */
-class LoginRequest : public IEvent
-{
-public:
-    LoginRequest() : IEvent(), mCredentials() {}
-    LoginRequest(EventID eventId) : IEvent(eventId), mCredentials() {}
-    LoginRequest(EventID eventId, const tutorial::Person& credentials) 
-        : IEvent(eventId), mCredentials(credentials) {}
+class LoginRequest : public IEvent {
+ public:
+  LoginRequest() : IEvent(), mCredentials() {}
+  LoginRequest(EventID eventId) : IEvent(eventId), mCredentials() {}
+  LoginRequest(EventID eventId, const tutorial::Person& credentials)
+      : IEvent(eventId), mCredentials(credentials) {}
 
-    ~LoginRequest() {}
+  ~LoginRequest() {}
 
-    const tutorial::Person& getCredentials() const
-    {
-        return mCredentials;
-    }
+  const tutorial::Person& getCredentials() const { return mCredentials; }
 
-private:
-    tutorial::Person mCredentials;
+ private:
+  tutorial::Person mCredentials;
 };
 
 /**
  * Base class for core messaging event handlers.
  */
-class EventHandler
-{
-public:
-    // Each event handler needs a handler id to support subscribing and
-    // unsubscribing handlers.
-    typedef unsigned long HandlerId;
+class EventHandler {
+ public:
+  // Each event handler needs a handler id to support subscribing and
+  // unsubscribing handlers.
+  typedef unsigned long HandlerId;
 
-    /**
-     * Destructor
-     */
-    virtual ~EventHandler() {}
+  /**
+   * Destructor
+   */
+  virtual ~EventHandler() {}
 
-    /**
-     * Handler for an Event
-     */
-    virtual void onEvent(const IEvent& event) = 0;
+  /**
+   * Handler for an Event
+   */
+  virtual void onEvent(const IEvent& event) = 0;
 
-    /**
-     * Gets this event handlers Id.
-     */
-    HandlerId getId() const
-    {
-        return mHandlerId;
-    }
+  /**
+   * Gets this event handlers Id.
+   */
+  HandlerId getId() const { return mHandlerId; }
 
-protected:
-    /**
-     * Constructor
-     * \param id    The id of to give this handler.
-     */
-    EventHandler(HandlerId id) : mHandlerId(id) {}
+ protected:
+  /**
+   * Constructor
+   * \param id    The id of to give this handler.
+   */
+  EventHandler(HandlerId id) : mHandlerId(id) {}
 
-private:
-    // The id for this event handler.
-    HandlerId mHandlerId;
+ private:
+  // The id for this event handler.
+  HandlerId mHandlerId;
 
-    /**
-     * Constructor
-     */
-    EventHandler() : mHandlerId(0) {}
+  /**
+   * Constructor
+   */
+  EventHandler() : mHandlerId(0) {}
 };
 
 /**
  * Clas for handling login request messages.
  */
-class LoginRequestHandler : public EventHandler
-{
-public:
-    /**
-     * Constructor (disabled)
-     */
-    LoginRequestHandler() = delete;
+class LoginRequestHandler : public EventHandler {
+ public:
+  /**
+   * Constructor (disabled)
+   */
+  LoginRequestHandler() = delete;
 
-    /**
-     * Constructor.
-     * \param id    The id of to give this handler.
-     */
-    LoginRequestHandler(HandlerId id) : EventHandler(0) {}
+  /**
+   * Constructor.
+   * \param id    The id of to give this handler.
+   */
+  LoginRequestHandler(HandlerId id) : EventHandler(0) {}
 
-    /**
-     * Destructor.
-     */
-    virtual ~LoginRequestHandler() {}
+  /**
+   * Destructor.
+   */
+  virtual ~LoginRequestHandler() {}
 
-    /**
-     * Method triggered when a \c LoginRequest event is received.
-     * \param event The event received.
-     */
-    virtual void onEvent(const LoginRequest& event) 
-    {
-        std::cout << "LoginRequestHandler::onEvent " << std::to_string(event.getEventId()) << std::endl;
-    }
+  /**
+   * Method triggered when a \c LoginRequest event is received.
+   * \param event The event received.
+   */
+  virtual void onEvent(const LoginRequest& event) {
+    std::cout << "LoginRequestHandler::onEvent "
+              << std::to_string(event.getEventId()) << std::endl;
+  }
 };
-}
+}  // namespace CoreMessaging
 
-#endif // EVENTING_H
+#endif  // EVENTING_H

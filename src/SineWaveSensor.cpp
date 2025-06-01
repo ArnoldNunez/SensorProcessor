@@ -1,14 +1,9 @@
 
 #include "SineWaveSensor.h"
 
-namespace SimSensors
-{
-    SineWaveSensor::SineWaveSensor()
-    {
-    }
-    
-    SineWaveSensor::~SineWaveSensor()
-    {
-    }
-    
-} // namespace SimSensors
+namespace SimSensors {
+SineWaveSensor::SineWaveSensor() {}
+
+SineWaveSensor::~SineWaveSensor() {}
+
+}  // namespace SimSensors

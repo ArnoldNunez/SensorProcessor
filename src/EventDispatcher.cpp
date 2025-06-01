@@ -1,15 +1,10 @@
 
 #include "EventDispatcher.h"
 
-namespace CoreMessaging
-{
+namespace CoreMessaging {
 
-EventDispatcher::EventDispatcher()
-{
-}
+EventDispatcher::EventDispatcher() {}
 
-EventDispatcher::~EventDispatcher()
-{
-}
+EventDispatcher::~EventDispatcher() {}
 
-}
+}  // namespace CoreMessaging
