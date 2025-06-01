@@ -10,6 +10,14 @@
 #include <thread>
 
 /**
+ * Forward declares
+ */
+namespace CoreMessaging {
+class EventBus;
+class ClientBroker;
+}  // namespace CoreMessaging
+
+/**
  * Class representing the Core application. This is
  * the entry point for the application.
  */
@@ -17,8 +25,13 @@ class CoreApplication {
  public:
   /**
    * Constructor
+   * \param eventBus        The event bus used for internal component
+   *                        communications.
+   * \param clientBroker    The client broker that handles messaging between
+   *                        this application and the clients.
    */
-  CoreApplication();
+  CoreApplication(std::unique_ptr<CoreMessaging::EventBus>& eventBus,
+                  std::unique_ptr<CoreMessaging::ClientBroker>& clientBroker);
 
   /**
    * Destructor
@@ -36,10 +49,16 @@ class CoreApplication {
   void exit();
 
  private:
+  /// @brief  The event bus used for internal component communications.
+  std::unique_ptr<CoreMessaging::EventBus> mEventBus;
+
+  /// @brief  The client broker handling messaging between the app and clients.
+  std::unique_ptr<CoreMessaging::ClientBroker> mClientBroker;
+
   /**
-   * The main application thread
+   * Test function for polling client communication.
    */
-  std::thread mMainThread;
+  void testClientPolling();
 };
 
 #endif  // CORE_APPLICATION_H

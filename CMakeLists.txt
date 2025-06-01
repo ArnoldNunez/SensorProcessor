@@ -9,6 +9,7 @@ find_package(Protobuf REQUIRED)
 
 set(SRCS src/main.cpp
          src/CoreApplication.cpp
+         src/ClientBroker.cpp
          src/SineWaveSensor.cpp
          src/EventBus.cpp
          src/EventDispatcher.cpp
@@ -20,6 +21,7 @@ set(SRCS src/main.cpp
 )
 
 set(HDRS include/CoreApplication.h
+         include/ClientBroker.h
          include/SineWaveSensor.h
          include/EventBus.h
          include/EventDispatcher.h
