@@ -42,8 +42,8 @@ int main(int argc, char* argv[]) {
   auto clientBroker = std::make_unique<CoreMessaging::ClientBroker>();
 
   // Inject dependencies
-  auto coreApplication =
-      std::make_unique<CoreApplication>(applicationEventBus, clientBroker);
+  auto coreApplication = std::make_unique<CoreApplication>(
+      appConfig, applicationEventBus, clientBroker);
 
   coreApplication->start();
 

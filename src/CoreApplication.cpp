@@ -16,9 +16,12 @@
 
 //-----
 CoreApplication::CoreApplication(
+    const AppConfig& appConfig,
     std::unique_ptr<CoreMessaging::EventBus>& eventBus,
     std::unique_ptr<CoreMessaging::ClientBroker>& clientBroker)
-    : mEventBus(std::move(eventBus)), mClientBroker(std::move(clientBroker)) {}
+    : mEventBus(std::move(eventBus)), mClientBroker(std::move(clientBroker)) {
+  mClientBroker->setConfiguration(appConfig);
+}
 
 //-----
 CoreApplication::~CoreApplication() {}
@@ -44,7 +47,9 @@ void CoreApplication::start() {
   mEventBus->registerTypeWithEvent(typeid(tutorial::Person),
                                    CoreMessaging::EventID::LOGIN_REQUEST);
 
-  mClientBroker->testClientPolling(mEventBus.get());
+  // mClientBroker->testClientPolling(mEventBus.get());
+  // mClientBroker->testClientPollingPull(mEventBus.get());
+  mClientBroker->testClientPush();
 }
 
 //-----

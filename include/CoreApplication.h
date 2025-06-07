@@ -9,6 +9,8 @@
 
 #include <thread>
 
+#include "AppConfig.h"
+
 /**
  * Forward declares
  */
@@ -25,12 +27,14 @@ class CoreApplication {
  public:
   /**
    * Constructor
+   * \param appConfig       The application configuration.
    * \param eventBus        The event bus used for internal component
    *                        communications.
    * \param clientBroker    The client broker that handles messaging between
    *                        this application and the clients.
    */
-  CoreApplication(std::unique_ptr<CoreMessaging::EventBus>& eventBus,
+  CoreApplication(const AppConfig& appConfig,
+                  std::unique_ptr<CoreMessaging::EventBus>& eventBus,
                   std::unique_ptr<CoreMessaging::ClientBroker>& clientBroker);
 
   /**
