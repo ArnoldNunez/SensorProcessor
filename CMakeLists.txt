@@ -9,6 +9,7 @@ find_package(Protobuf REQUIRED)
 
 set(SRCS src/main.cpp
          src/CoreApplication.cpp
+         src/AppConfig.cpp
          src/ClientBroker.cpp
          src/SineWaveSensor.cpp
          src/EventBus.cpp
@@ -21,6 +22,7 @@ set(SRCS src/main.cpp
 )
 
 set(HDRS include/CoreApplication.h
+         include/AppConfig.h
          include/ClientBroker.h
          include/SineWaveSensor.h
          include/EventBus.h
@@ -30,14 +32,19 @@ set(HDRS include/CoreApplication.h
          # Generated
          generated/addressbook.pb.h
          generated/Sensor.pb.h
-         generated/SensorType.pb.h)
+         generated/SensorType.pb.h
+         
+         # 3rd Party
+         external/nlohmann/json.hpp)
 
 add_executable(${PROJECT_NAME} ${SRCS})
 
 target_include_directories(${PROJECT_NAME} 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/generated>
+           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/nlohmann>
            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+           
 
            # Headers to include when installing
            # implicitly prefixes with ${CMAKE_INSTALL_PREFIX}

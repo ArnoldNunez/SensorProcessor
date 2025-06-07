@@ -5,12 +5,14 @@
  */
 
 #include <chrono>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <thread>
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
 
+#include "AppConfig.h"
 #include "ClientBroker.h"
 #include "CoreApplication.h"
 #include "EventBus.h"
@@ -28,6 +30,12 @@ int main(int argc, char* argv[]) {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   // Load application configuration here.
+  std::ifstream ifs("AppConfig.json");
+  nlohmann::json configJson = nlohmann::json::parse(ifs);
+
+  AppConfig appConfig;
+  AppConfig::fromJson(configJson, appConfig);
+  std::cout << appConfig.toStdString() << std::endl;
 
   // Initialize Core Application Dependencies
   auto applicationEventBus = std::make_unique<CoreMessaging::EventBus>();
