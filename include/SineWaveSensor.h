@@ -37,7 +37,7 @@ class SineWaveSensor {
    */
   float getSample(long long time) const {
     return mAmplitude *
-           sin(2.0 * M_PI * (1.0 / (mPeriod * 1000.0)) + mPhaseShift);
+           sin(2.0 * M_PI * (1.0 / (mPeriod * 1000.0)) * time + mPhaseShift);
   }
 
  private:

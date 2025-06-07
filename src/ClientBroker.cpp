@@ -277,7 +277,7 @@ void ClientBroker::testClientPush() {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
     // Test push out sensor value
-    SimSensors::SineWaveSensor sensor(1.0f, 2);
+    SimSensors::SineWaveSensor sensor(10.0f, 2);
     float sample = sensor.getSample(elapsedTime);
 
     Communication::Sensors::SensorValueScalar valueMsg;
