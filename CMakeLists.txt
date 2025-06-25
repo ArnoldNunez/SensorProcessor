@@ -54,3 +54,4 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} ${PROTOBUF_LIBRARY} zmq)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
+install(FILES resources/config/AppConfig.json DESTINATION . COMPONENT config)
