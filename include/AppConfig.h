@@ -31,6 +31,11 @@ class AppConfig {
   };
 
   /**
+   * Returns a config instance with default values.
+   */
+  static AppConfig defaultConfig();
+
+  /**
    * Creates a config object from the given json
    * \param json      The json object to parse.
    * \param outConfig The output app config resulting from the parsing.

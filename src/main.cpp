@@ -30,11 +30,18 @@ int main(int argc, char* argv[]) {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   // Load application configuration here.
+  AppConfig appConfig = AppConfig::defaultConfig();
   std::ifstream ifs("AppConfig.json");
-  nlohmann::json configJson = nlohmann::json::parse(ifs);
-
-  AppConfig appConfig;
-  AppConfig::fromJson(configJson, appConfig);
+  if (ifs.is_open())
+  {
+    nlohmann::json configJson = nlohmann::json::parse(ifs);
+    AppConfig::fromJson(configJson, appConfig);
+  }
+  else
+  {
+    std::cout << "Failed to load App config, defaulting app settings" << std::endl;
+  }
+  
   std::cout << appConfig.toStdString() << std::endl;
 
   // Initialize Core Application Dependencies

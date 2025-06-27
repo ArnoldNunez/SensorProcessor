@@ -37,6 +37,20 @@ std::string AppConfig::toStdString() const {
 }
 
 //-----
+AppConfig AppConfig::defaultConfig() {
+  AppConfig defaultConfig;
+  defaultConfig.mClientConfig.mIp = "127.0.0.1";
+  defaultConfig.mClientConfig.mName = "Client";
+  defaultConfig.mClientConfig.mRecvPort = 5558;
+
+  defaultConfig.mClientConfig.mIp = "127.0.0.1";
+  defaultConfig.mClientConfig.mName = "server";
+  defaultConfig.mClientConfig.mRecvPort = 5558;
+
+  return defaultConfig;
+}
+
+//-----
 bool AppConfig::fromJson(const nlohmann::json& json, AppConfig& outConfig) {
   AppConfig result;
 
