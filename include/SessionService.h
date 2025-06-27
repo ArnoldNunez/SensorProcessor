@@ -12,6 +12,7 @@
 
 namespace CoreMessaging {
 class EventBus;
+class ClientBroker;
 }  // namespace CoreMessaging
 
 namespace CoreServices {
@@ -25,7 +26,8 @@ class SessionService : public IService,
    * Constructor.
    * \param eventBus    The event bus used to communicate to other services.
    */
-  SessionService(CoreMessaging::EventBus* eventBus);
+  SessionService(CoreMessaging::EventBus* eventBus,
+                 CoreMessaging::ClientBroker* clientBroker);
 
   /**
    * Destructor.

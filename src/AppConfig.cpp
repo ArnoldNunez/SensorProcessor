@@ -43,9 +43,9 @@ AppConfig AppConfig::defaultConfig() {
   defaultConfig.mClientConfig.mName = "Client";
   defaultConfig.mClientConfig.mRecvPort = 5558;
 
-  defaultConfig.mClientConfig.mIp = "127.0.0.1";
-  defaultConfig.mClientConfig.mName = "server";
-  defaultConfig.mClientConfig.mRecvPort = 5558;
+  defaultConfig.mServerConfig.mIp = "127.0.0.1";
+  defaultConfig.mServerConfig.mName = "server";
+  defaultConfig.mServerConfig.mRecvPort = 5557;
 
   return defaultConfig;
 }

@@ -6,11 +6,14 @@
 
 #include "IService.h"
 
+#include "ClientBroker.h"
 #include "EventBus.h"
 
 namespace CoreServices {
 //-----
-IService::IService(CoreMessaging::EventBus* eventBus) : mEventBus(eventBus) {}
+IService::IService(CoreMessaging::EventBus* eventBus,
+                   CoreMessaging::ClientBroker* clientBroker)
+    : mEventBus(eventBus), mClientBroker(clientBroker) {}
 
 //-----
 IService::~IService() {}

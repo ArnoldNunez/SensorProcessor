@@ -51,7 +51,8 @@ void CoreApplication::start() {
 
   // mClientBroker->testClientPolling(mEventBus.get());
   // mClientBroker->testClientPollingPull(mEventBus.get());
-  mClientBroker->testClientPush();
+  // mClientBroker->testClientPush();
+  mClientBroker->startCommunication();
 }
 
 //-----

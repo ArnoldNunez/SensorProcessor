@@ -8,6 +8,7 @@
 #define CLIENT_BROKER_H
 
 #include <queue>
+#include <thread>
 
 #include "AppConfig.h"
 #include "Sensor.pb.h"
@@ -43,6 +44,11 @@ class ClientBroker {
       const Communication::Sensors::SensorValueScalar& value);
 
   /**
+   * Blocking call to start bi-directional communication with clients.
+   */
+  void startCommunication();
+
+  /**
    * Applies the configuration to this broker
    * \param config  The application configuration
    */
@@ -57,6 +63,9 @@ class ClientBroker {
 
   /// @brief Configuration information for the server communication.
   AppConfig::NodeConfig mServerConfig;
+
+  /// @brief Thread used for sending messages to clients.
+  std::thread mSendThread;
 };
 
 }  // namespace CoreMessaging

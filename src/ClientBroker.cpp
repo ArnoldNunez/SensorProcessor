@@ -194,7 +194,8 @@
 namespace CoreMessaging {
 
 //-----
-ClientBroker::ClientBroker() : mClientConfig(), mServerConfig() {}
+ClientBroker::ClientBroker()
+    : mClientConfig(), mServerConfig(), mSendThread() {}
 
 //-----
 ClientBroker::~ClientBroker() {}
@@ -391,6 +392,48 @@ void ClientBroker::testPublishSensor(
 //-----
 void ClientBroker::testPublishSensorValue(
     const Communication::Sensors::SensorValueScalar& value) {}
+
+//-----
+void ClientBroker::startCommunication() {
+  zmq::context_t context;
+  zmq::socket_t recvSock(context, zmq::socket_type::pull);
+  zmq::socket_t sockSender(context, zmq::socket_type::push);
+  std::string recvConnStr = "tcp://" + mServerConfig.mIp + ":" +
+                            std::to_string(mServerConfig.mRecvPort);
+  std::string sendConnStr = "tcp://" + mClientConfig.mIp + ":" +
+                            std::to_string(mClientConfig.mRecvPort);
+  std::cout << recvConnStr << std::endl;
+  std::cout << sendConnStr << std::endl;
+  recvSock.bind(recvConnStr);
+  sockSender.connect(sendConnStr);
+
+  long long elapsedTime = 0;
+
+  // Initialzie Poll Set
+  int numSockets = 1;
+  zmq::pollitem_t items[numSockets] = {{
+      recvSock,    // Socket to poll on
+      0,           // OR, natife file handle to poll on
+      ZMQ_POLLIN,  // Eevents to poll on
+      0            // Events returned after poll
+  }};
+  while (true) {
+    zmq::message_t message;
+    zmq::poll(&items[0], numSockets, std::chrono::milliseconds{0});
+
+    if (items[0].revents & ZMQ_POLLIN) {
+      // Grab data from the socket
+      zmq::recv_result_t result = recvSock.recv(message, zmq::recv_flags::none);
+      if (result) {
+        // eventBus->processMessage(p);
+      }
+    }
+  }
+
+  zmq_close(recvSock);
+  zmq_close(sockSender);
+  zmq_ctx_term((void*)context);
+}
 
 //-----
 void ClientBroker::setConfiguration(const AppConfig& config) {

@@ -15,8 +15,10 @@ namespace CoreServices {
 const unsigned long SessionService::EVENT_BUS_SUBSCRIBER_ID = 34954;
 
 //-----
-SessionService::SessionService(CoreMessaging::EventBus* eventBus)
-    : IService(eventBus), LoginRequestHandler(EVENT_BUS_SUBSCRIBER_ID) {
+SessionService::SessionService(CoreMessaging::EventBus* eventBus,
+                               CoreMessaging::ClientBroker* clientBroker)
+    : IService(eventBus, clientBroker),
+      LoginRequestHandler(EVENT_BUS_SUBSCRIBER_ID) {
   subscribeToEvents();
 }
 
