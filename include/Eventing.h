@@ -20,6 +20,7 @@ enum EventID {
   UNKNOWN = 0,
   CLIENT_CONNECT_REQUEST = 1,
   LOGIN_REQUEST = 2,
+  LOGIN_RESPONSE = 3
 };
 
 /**

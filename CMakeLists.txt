@@ -15,6 +15,9 @@ set(SRCS src/main.cpp
          src/EventBus.cpp
          src/EventDispatcher.cpp
 
+         # Core Services
+         src/SessionService.cpp
+
          # Generated
          generated/addressbook.pb.cc
          generated/Sensor.pb.cc
@@ -28,6 +31,9 @@ set(HDRS include/CoreApplication.h
          include/EventBus.h
          include/EventDispatcher.h
          include/Eventing.h
+
+         # Core Services
+         include/SessionService.h
 
          # Generated
          generated/addressbook.pb.h

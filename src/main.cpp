@@ -17,6 +17,7 @@
 #include "CoreApplication.h"
 #include "EventBus.h"
 #include "Eventing.h"
+#include "SessionService.h"
 #include "addressbook.pb.h"
 
 /**
@@ -32,23 +33,24 @@ int main(int argc, char* argv[]) {
   // Load application configuration here.
   AppConfig appConfig = AppConfig::defaultConfig();
   std::ifstream ifs("AppConfig.json");
-  if (ifs.is_open())
-  {
+  if (ifs.is_open()) {
     nlohmann::json configJson = nlohmann::json::parse(ifs);
     AppConfig::fromJson(configJson, appConfig);
+  } else {
+    std::cout << "Failed to load App config, defaulting app settings"
+              << std::endl;
   }
-  else
-  {
-    std::cout << "Failed to load App config, defaulting app settings" << std::endl;
-  }
-  
+
   std::cout << appConfig.toStdString() << std::endl;
 
   // Initialize Core Application Dependencies
   auto applicationEventBus = std::make_unique<CoreMessaging::EventBus>();
   auto clientBroker = std::make_unique<CoreMessaging::ClientBroker>();
+  auto sessionService =
+      std::make_unique<CoreServices::SessionService>(applicationEventBus.get());
 
-  // Inject dependencies
+  // Inject depenauto sessionService =
+  //     std::make_unique<CoreServices::SessionService>(applicationEventBus.get());dencies
   auto coreApplication = std::make_unique<CoreApplication>(
       appConfig, applicationEventBus, clientBroker);
 

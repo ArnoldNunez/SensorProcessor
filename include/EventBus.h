@@ -55,6 +55,17 @@ class EventBus {
     }
   }
 
+  void unsubscribe(EventID eventID, EventHandler* handler) {
+    for (int i = 0; i < mListeners[eventID].size(); ++i) {
+      const auto& listener = mListeners[eventID][i];
+
+      if (listener->getId() == handler->getId()) {
+        mListeners[eventID].erase(mListeners[eventID].begin() + i);
+        break;
+      }
+    }
+  }
+
   /**
    * Processes a received message on the bus and turns it
    * into an event.
