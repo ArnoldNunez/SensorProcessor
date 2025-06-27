@@ -12,6 +12,7 @@
 #include "ClientBroker.h"
 #include "EventBus.h"
 #include "Eventing.h"
+#include "Login.pb.h"
 #include "addressbook.pb.h"
 
 //-----
@@ -43,8 +44,9 @@ void CoreApplication::start() {
   }
 
   // Register message types with the event bus
-  std::cout << "Main: typeid:" << typeid(tutorial::Person).name() << std::endl;
   mEventBus->registerTypeWithEvent(typeid(tutorial::Person),
+                                   CoreMessaging::EventID::LOGIN_REQUEST);
+  mEventBus->registerTypeWithEvent(typeid(CoreServices::LoginRequest),
                                    CoreMessaging::EventID::LOGIN_REQUEST);
 
   // mClientBroker->testClientPolling(mEventBus.get());

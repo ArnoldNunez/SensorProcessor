@@ -6,5 +6,6 @@ then
 mkdir generated
 fi
 
-protoc -I=protos --cpp_out=generated protos/*.proto
+protoc -I=protos --cpp_out=generated protos/*.proto protos/DiagnosticsService/*.proto protos/SessionService/*.proto
+    
 echo "Generation complete!"

@@ -16,12 +16,18 @@ set(SRCS src/main.cpp
          src/EventDispatcher.cpp
 
          # Core Services
+         src/IService.cpp
          src/SessionService.cpp
 
          # Generated
          generated/addressbook.pb.cc
          generated/Sensor.pb.cc
          generated/SensorType.pb.cc
+
+         generated/DiagnosticsService/ServerInfo.pb.cc
+
+         generated/SessionService/Login.pb.cc
+
 )
 
 set(HDRS include/CoreApplication.h
@@ -33,12 +39,17 @@ set(HDRS include/CoreApplication.h
          include/Eventing.h
 
          # Core Services
+         include/IService.h
          include/SessionService.h
 
          # Generated
          generated/addressbook.pb.h
          generated/Sensor.pb.h
          generated/SensorType.pb.h
+
+         generated/DiagnosticsService/ServerInfo.pb.h
+
+         generated/SessionService/Login.pb.h
          
          # 3rd Party
          external/nlohmann/json.hpp)
@@ -48,6 +59,8 @@ add_executable(${PROJECT_NAME} ${SRCS})
 target_include_directories(${PROJECT_NAME} 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/generated>
+           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/generated/DiagnosticsService>
+           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/generated/SessionService>
            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/nlohmann>
            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
            

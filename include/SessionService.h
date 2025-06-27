@@ -7,12 +7,19 @@
 #ifndef SESSION_SERVICE_H
 #define SESSION_SERVICE_H
 
+#include "Eventing.h"
+#include "IService.h"
+
 namespace CoreMessaging {
 class EventBus;
 }  // namespace CoreMessaging
 
 namespace CoreServices {
-class SessionService {
+/**
+ * Service responsible for handling session related messaging.
+ */
+class SessionService : public IService,
+                       public CoreMessaging::LoginRequestHandler {
  public:
   /**
    * Constructor.
@@ -24,6 +31,21 @@ class SessionService {
    * Destructor.
    */
   ~SessionService();
+
+  /**
+   * Handler for the login request message.
+   * \param event The login request event.
+   */
+  virtual void onEvent(const CoreMessaging::LoginRequest& event) override;
+
+ private:
+  // Identifier assigned to this subscriber of the event bus.
+  static const unsigned long EVENT_BUS_SUBSCRIBER_ID;
+
+  /**
+   * Subscribe to the event bus
+   */
+  void subscribeToEvents();
 };
 }  // namespace CoreServices
 

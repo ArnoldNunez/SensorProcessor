@@ -75,7 +75,7 @@ class EventHandler {
   /**
    * Handler for an Event
    */
-  virtual void onEvent(const IEvent& event) = 0;
+  virtual void onEvent(const IEvent& event) {};
 
   /**
    * Gets this event handlers Id.
