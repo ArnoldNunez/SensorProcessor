@@ -42,7 +42,7 @@ You can install the ZeroMQ development packages via your OS package manager our 
 
 ```
 # Install on Ubuntu
-apt-get install libzmq3-dev
+apt install libzmq3-dev
 ```
 
 ### Building

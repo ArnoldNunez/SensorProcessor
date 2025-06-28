@@ -62,7 +62,7 @@ message StorageSpecs {
 * Enumeration of the CPU byte orders.
 */
 enum ByteOrder {
-    BYTE_ORDER_UNKNOWN = 1;
-    BYTE_ORDER_LITTLE_ENDIAN = 2;
-    BYTE_ORDER_BIG_ENDIAN = 3;
-}|
+    BYTE_ORDER_UNKNOWN = 0;
+    BYTE_ORDER_LITTLE_ENDIAN = 1;
+    BYTE_ORDER_BIG_ENDIAN = 2;
+}
