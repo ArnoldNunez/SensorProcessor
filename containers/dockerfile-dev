@@ -1,0 +1,26 @@
+# =================================
+# Application Development Dockerfile
+# =================================
+
+FROM sensor-processor-dev-base:1.0
+
+# Environment Variables
+
+# Packages
+RUN apt install -y \
+    protobuf-compiler \
+    libprotobuf-dev \
+    libzmq3-dev
+
+# Create User
+ARG USER_ID=1001
+ARG USER_NAME=developer
+RUN useradd -m -u $USER_ID -s /bin/bash $USER_NAME
+RUN echo "$USER_NAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+USER $USER_NAME
+
+# Working dir
+WORKDIR /app
+
+# Default command
+CMD ["/bin/bash"]

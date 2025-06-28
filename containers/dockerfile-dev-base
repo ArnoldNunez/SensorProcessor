@@ -1,0 +1,21 @@
+# =================================
+# Base Development Dockerfile
+# =================================
+
+FROM ubuntu:24.04
+
+# Environment Variables
+
+# Packages
+RUN apt update && \
+    apt install -y \
+        build-essential \
+        cmake \
+        git \
+        wget \
+        curl \
+        ca-certificates \
+        unzip
+
+# Default command
+CMD ["/bin/bash"]
