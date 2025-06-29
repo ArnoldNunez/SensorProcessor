@@ -5,6 +5,7 @@
  */
 
 #include <chrono>
+#include <csignal>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -21,6 +22,12 @@
 #include "addressbook.pb.h"
 
 /**
+ * Handler for the SIGINT. Will attempt to exit
+ * cleanly.
+ */
+void sigintHandler(int signal) { CoreApplication::EXIT_SIGNAL.store(true); }
+
+/**
  * The Main entry point.
  * \param argc No command line parameters supported.
  * \param argv No command line parametesr supported.
@@ -29,6 +36,9 @@ int main(int argc, char* argv[]) {
   // Verify that the version of the library that we linked against is
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  // Intercept SIGINT to attempt clean exit
+  std::signal(SIGINT, sigintHandler);
 
   // Load application configuration here.
   AppConfig appConfig = AppConfig::defaultConfig();

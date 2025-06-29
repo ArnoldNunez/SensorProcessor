@@ -9,193 +9,23 @@
 #include <ctime>
 #include <iostream>
 #include <thread>
-#include <zmq.hpp>
 #include <zmq_addon.hpp>
 
+#include "CoreApplication.h"
 #include "EventBus.h"
 #include "SineWaveSensor.h"
 #include "addressbook.pb.h"
-
-//
-// Message buildup example
-//
-// tutorial::AddressBook addressBook;
-// tutorial::Person person;
-// person.set_name("John Doe");
-// person.set_email("jdoe@example.com");
-// tutorial::Person::PhoneNumber* phoneNumber = person.add_phones();
-// phoneNumber->set_number("555-4321");
-// phoneNumber->set_type(tutorial::Person::PHONE_TYPE_HOME);
-// std::cout << person.DebugString() << std::endl;
-
-// // Register message types with the event bus
-// std::cout << "Main: typeid:" << typeid(tutorial::Person).name() <<
-// std::endl; eventBus.registerTypeWithEvent(typeid(tutorial::Person),
-//                                CoreMessaging::EventID::LOGIN_REQUEST);
-
-// doZeroMqStuff();
-// testRealClient();
-// testRealClientFrames();
-// testClientPolling();
-
-// void doZeroMqStuff() {
-//   zmq::context_t ctx;
-//   zmq::socket_t sock1(ctx, zmq::socket_type::push);
-//   zmq::socket_t sock2(ctx, zmq::socket_type::pull);
-//   sock1.bind("tcp://127.0.0.1:*");
-
-//   const std::string last_endpoint = sock1.get(zmq::sockopt::last_endpoint);
-
-//   std::cout << "Connecting to " << last_endpoint << std::endl;
-//   sock2.connect(last_endpoint);
-
-//   tutorial::AddressBook addressBook;
-//   tutorial::Person person;
-//   person.set_name("John Doe");
-//   person.set_email("jdoe@example.com");
-//   tutorial::Person::PhoneNumber* phoneNumber = person.add_phones();
-//   phoneNumber->set_number("555-4321");
-//   phoneNumber->set_type(tutorial::Person::PHONE_TYPE_HOME);
-//   std::string personBinary;
-//   person.SerializeToString(&personBinary);
-
-//   std::array<zmq::const_buffer, 2> send_msgs = {
-//       zmq::str_buffer("foo"), zmq::buffer(personBinary,
-//       personBinary.length())};
-//   if (!zmq::send_multipart(sock1, send_msgs)) {
-//     return;
-//   }
-
-//   std::vector<zmq::message_t> recv_msgs;
-//   const auto ret = zmq::recv_multipart(sock2, std::back_inserter(recv_msgs));
-//   if (!ret) {
-//     return;
-//   }
-
-//   std::cout << "Got " << *ret << " messages" << std::endl;
-//   for (size_t i = 0; i < *ret; ++i) {
-//     tutorial::Person p = tutorial::Person();
-//     p.ParseFromArray(recv_msgs[i].data(), recv_msgs[i].size());
-
-//     std::cout << p.name().c_str() << std::endl;
-//     std::cout << p.DebugString() << std::endl;
-//   }
-
-//   // sock.bind("inproc://test");
-//   // sock.send(zmq::str_buffer("Hello World"), zmq::send_flags::dontwait);
-// }
-
-// void testRealClient() {
-//   zmq::context_t ctx;
-//   zmq::socket_t sock(ctx, zmq::socket_type::router);
-//   sock.bind("tcp://127.0.0.1:5556");
-
-//   std::vector<zmq::message_t> recv_msgs;
-//   const auto ret = zmq::recv_multipart(sock, std::back_inserter(recv_msgs));
-//   if (!ret) {
-//     return;
-//   }
-
-//   std::cout << "Got " << *ret << " messages" << std::endl;
-//   for (size_t i = 0; i < *ret; ++i) {
-//     tutorial::Person p = tutorial::Person();
-//     p.ParseFromArray(recv_msgs[i].data(), recv_msgs[i].size());
-
-//     // std::cout << p.name().c_str() << std::endl;
-//     std::cout << p.DebugString() << std::endl;
-//   }
-// }
-
-// void testRealClientFrames() {
-//   std::cout << "---------------------------" << std::endl;
-//   std::cout << "Test real client frames" << std::endl;
-//   std::cout << "---------------------------" << std::endl;
-
-//   zmq::context_t ctx;
-//   zmq::socket_t sock(ctx, zmq::socket_type::router);
-//   sock.bind("tcp://127.0.0.1:5556");
-
-//   while (true) {
-//     std::vector<zmq::message_t> frames;
-//     zmq::message_t message;
-//     zmq::recv_result_t result;
-
-//     result = sock.recv(message, zmq::recv_flags::none);
-//     if (result) {
-//       tutorial::Person p = tutorial::Person();
-//       p.ParseFromArray(message.data(), message.size());
-
-//       std::cout << p.DebugString() << std::endl;
-//     }
-
-//     // do {
-//     //     result = sock.recv(message, zmq::recv_flags::none);
-//     //     if (result)
-//     //     {
-//     //         frames.push_back(message);
-//     //     }
-//     // } while (sock.getsockopt<int>(ZMQ_RCVMORE));
-
-//     // // Process the received frames
-//     // for (const auto& frame: frames)
-//     // {
-//     //     tutorial::Person p = tutorial::Person();
-//     //     p.ParseFromArray(frame.data(), frame.size());
-
-//     //     std::cout << p.DebugString() << std::endl;
-//     // }
-//   }
-// }
-
-// void testClientPolling() {
-//   std::cout << "---------------------------" << std::endl;
-//   std::cout << "Test Client Polling" << std::endl;
-//   std::cout << "---------------------------" << std::endl;
-
-//   zmq::context_t context;
-//   zmq::socket_t sock(context, zmq::socket_type::router);
-//   sock.bind("tcp://127.0.0.1:5556");
-
-//   // Initialzie Poll Set
-//   int numSockets = 1;
-//   zmq::pollitem_t items[numSockets] = {{
-//       sock,        // Socket to poll on
-//       0,           // OR, natife file handle to poll on
-//       ZMQ_POLLIN,  // Eevents to poll on
-//       0            // Events returned after poll
-//   }};
-//   while (true) {
-//     zmq::message_t message;
-//     zmq::poll(&items[0], numSockets, std::chrono::milliseconds{-1});
-
-//     if (items[0].revents & ZMQ_POLLIN) {
-//       // Grab data from the socket
-//       zmq::recv_result_t result = sock.recv(message, zmq::recv_flags::none);
-//       if (result) {
-//         // std::cout << "Processing message" << std::endl;
-//         // process message
-//         tutorial::Person p = tutorial::Person();
-//         p.ParseFromArray(message.data(), message.size());
-//         std::cout << p.DebugString() << std::endl;
-
-//         eventBus.processMessage(p);
-//       }
-//     }
-
-//     // TODO: Throttle this thread better.
-//     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-//   }
-
-//   std::cout << "Comms Exiting..." << std::endl;
-//   zmq_close(sock);
-//   zmq_ctx_term((void*)context);
-// }
 
 namespace CoreMessaging {
 
 //-----
 ClientBroker::ClientBroker()
-    : mClientConfig(), mServerConfig(), mSendThread() {}
+    : mClientConfig(),
+      mServerConfig(),
+      mRecvThread(),
+      mSendThread(),
+      mContext(1),
+      mExitSignal(false) {}
 
 //-----
 ClientBroker::~ClientBroker() {}
@@ -395,17 +225,31 @@ void ClientBroker::testPublishSensorValue(
 
 //-----
 void ClientBroker::startCommunication() {
-  zmq::context_t context;
-  zmq::socket_t recvSock(context, zmq::socket_type::pull);
-  zmq::socket_t sockSender(context, zmq::socket_type::push);
+  mRecvThread = std::thread(&ClientBroker::receiveWork, this);
+  mSendThread = std::thread(&ClientBroker::sendWork, this);
+
+  mRecvThread.join();
+  mSendThread.join();
+
+  mContext.close();
+}
+
+//-----
+void ClientBroker::setConfiguration(const AppConfig& config) {
+  mClientConfig = config.getClientConfig();
+  mServerConfig = config.getServerConfig();
+}
+
+//-----
+void ClientBroker::receiveWork() {
+  zmq::socket_t recvSock(mContext, zmq::socket_type::pull);
+  recvSock.set(zmq::sockopt::linger, 0);
+
   std::string recvConnStr = "tcp://" + mServerConfig.mIp + ":" +
                             std::to_string(mServerConfig.mRecvPort);
-  std::string sendConnStr = "tcp://" + mClientConfig.mIp + ":" +
-                            std::to_string(mClientConfig.mRecvPort);
   std::cout << recvConnStr << std::endl;
-  std::cout << sendConnStr << std::endl;
+
   recvSock.bind(recvConnStr);
-  sockSender.connect(sendConnStr);
 
   long long elapsedTime = 0;
 
@@ -418,6 +262,12 @@ void ClientBroker::startCommunication() {
       0            // Events returned after poll
   }};
   while (true) {
+    // Check exit signal to exit gracefully.
+    if (CoreApplication::EXIT_SIGNAL.load()) {
+      break;
+    }
+
+    // Poll on the socket
     zmq::message_t message;
     zmq::poll(&items[0], numSockets, std::chrono::milliseconds{0});
 
@@ -430,15 +280,30 @@ void ClientBroker::startCommunication() {
     }
   }
 
-  zmq_close(recvSock);
-  zmq_close(sockSender);
-  zmq_ctx_term((void*)context);
+  recvSock.close();
 }
 
 //-----
-void ClientBroker::setConfiguration(const AppConfig& config) {
-  mClientConfig = config.getClientConfig();
-  mServerConfig = config.getServerConfig();
+void ClientBroker::sendWork() {
+  zmq::socket_t sockSender(mContext, zmq::socket_type::push);
+  sockSender.set(zmq::sockopt::linger, 0);
+
+  std::string sendConnStr = "tcp://" + mClientConfig.mIp + ":" +
+                            std::to_string(mClientConfig.mRecvPort);
+
+  std::cout << sendConnStr << std::endl;
+
+  sockSender.connect(sendConnStr);
+
+  while (true) {
+    // Check exit signal to exit gracefully.
+    if (CoreApplication::EXIT_SIGNAL.load()) {
+      break;
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
+
+  sockSender.close();
 }
 
 }  // namespace CoreMessaging

@@ -7,8 +7,10 @@
 #ifndef CLIENT_BROKER_H
 #define CLIENT_BROKER_H
 
+#include <atomic>
 #include <queue>
 #include <thread>
+#include <zmq.hpp>
 
 #include "AppConfig.h"
 #include "Sensor.pb.h"
@@ -64,8 +66,27 @@ class ClientBroker {
   /// @brief Configuration information for the server communication.
   AppConfig::NodeConfig mServerConfig;
 
+  /// @brief Thread used for receiving messages from clients
+  std::thread mRecvThread;
+
   /// @brief Thread used for sending messages to clients.
   std::thread mSendThread;
+
+  /// @brief The ZeroMQ lib socket context.
+  zmq::context_t mContext;
+
+  /// @brief Flag signaling that worker threads should exit.
+  std::atomic<bool> mExitSignal;
+
+  /**
+   * Method that handles receving data from clients.
+   */
+  void receiveWork();
+
+  /**
+   * Method that handles sending data to clients.
+   */
+  void sendWork();
 };
 
 }  // namespace CoreMessaging

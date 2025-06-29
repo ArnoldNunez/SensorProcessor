@@ -15,6 +15,9 @@
 #include "Login.pb.h"
 #include "addressbook.pb.h"
 
+/// @brief Application exit signal declaration;
+volatile std::atomic<bool> CoreApplication::EXIT_SIGNAL(false);
+
 //-----
 CoreApplication::CoreApplication(
     const AppConfig& appConfig,
