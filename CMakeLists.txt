@@ -7,6 +7,8 @@ project(SensorProcessor VERSION 1.0)
 
 find_package(Protobuf REQUIRED)
 
+add_subdirectory(testing/testclient)
+
 set(SRCS src/main.cpp
          src/CoreApplication.cpp
          src/AppConfig.cpp
