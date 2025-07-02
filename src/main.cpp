@@ -4,6 +4,8 @@
  * Module: SensorProcessorService
  */
 
+#include <google/protobuf/stubs/common.h>
+
 #include <chrono>
 #include <csignal>
 #include <fstream>
@@ -19,7 +21,6 @@
 #include "EventBus.h"
 #include "Eventing.h"
 #include "SessionService.h"
-#include "addressbook.pb.h"
 
 /**
  * Handler for the SIGINT. Will attempt to exit

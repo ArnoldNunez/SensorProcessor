@@ -9,6 +9,8 @@ project(TestClient VERSION 1.0)
 find_package(Protobuf REQUIRED)
 
 set(SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+         ${CMAKE_CURRENT_SOURCE_DIR}/src/cli.cpp
+         ${CMAKE_CURRENT_SOURCE_DIR}/src/SimpleBroker.cpp
 
          # Generated
          ${CMAKE_SOURCE_DIR}/generated/addressbook.pb.cc
@@ -21,7 +23,10 @@ set(SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 
 )
 
-set(HDRS # Generated
+set(HDRS ${CMAKE_CURRENT_SOURCE_DIR}/include/cli.h
+         ${CMAKE_CURRENT_SOURCE_DIR}/include/SimpleBroker.h
+
+         # Generated
          ${CMAKE_SOURCE_DIR}/generated/addressbook.pb.h
          ${CMAKE_SOURCE_DIR}/generated/Sensor.pb.h
          ${CMAKE_SOURCE_DIR}/generated/SensorType.pb.h

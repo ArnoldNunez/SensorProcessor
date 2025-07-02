@@ -4,12 +4,17 @@
  * Module: TestClient
  */
 
+#include <google/protobuf/stubs/common.h>
+
 #include <chrono>
 #include <iostream>
 #include <string>
 #include <thread>
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
+
+#include "SimpleBroker.h"
+#include "cli.h"
 
 /**
  * The Main entry point.
@@ -19,9 +24,30 @@
 int main(int argc, char* argv[]) {
   // Verify that the version of the library that we linked against is
   // compatible with the version of the headers we compiled against.
-  //   GOOGLE_PROTOBUF_VERIFY_VERSION;
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  std::cout << "TestClient::main" << std::endl;
+  TestClient::SimpleBroker broker;
+  TestClient::CLI cli(&broker);
+
+  std::string commands = R"(=== Commands ===
+login: Send login request
+q: quit the application)";
+  std::cout << commands << std::endl;
+  std::string input;
+  while (std::cin >> input) {
+    if (input == "login") {
+      cli.requestLogin("username", "password");
+    } else if (input == "q") {
+      break;
+    } else {
+      std::cout << "Not a valid command" << std::endl;
+
+      std::cout << commands << std::endl;
+    }
+  }
+
+  // stop comms
+  broker.stopComms();
 
   return 0;
 }
