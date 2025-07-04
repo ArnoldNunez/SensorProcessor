@@ -247,7 +247,7 @@ void ClientBroker::receiveWork() {
 
   std::string recvConnStr = "tcp://" + mServerConfig.mIp + ":" +
                             std::to_string(mServerConfig.mRecvPort);
-  std::cout << recvConnStr << std::endl;
+  std::cout << "ClientBroker:: listening on: " << recvConnStr << std::endl;
 
   recvSock.bind(recvConnStr);
 
@@ -275,6 +275,7 @@ void ClientBroker::receiveWork() {
       // Grab data from the socket
       zmq::recv_result_t result = recvSock.recv(message, zmq::recv_flags::none);
       if (result) {
+        std::cout << "ClientBroker:: received message" << std::endl;
         // eventBus->processMessage(p);
       }
     }
@@ -291,7 +292,7 @@ void ClientBroker::sendWork() {
   std::string sendConnStr = "tcp://" + mClientConfig.mIp + ":" +
                             std::to_string(mClientConfig.mRecvPort);
 
-  std::cout << sendConnStr << std::endl;
+  std::cout << "ClientBroker:: connected to: " << sendConnStr << std::endl;
 
   sockSender.connect(sendConnStr);
 
@@ -301,6 +302,12 @@ void ClientBroker::sendWork() {
       break;
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // FOR TESTING PURPOSES
+    // std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    // std::string msgStr = "TestMessage";
+    // zmq::message_t msg(msgStr);
+    // sockSender.send(msg, zmq::send_flags::none);
   }
 
   sockSender.close();

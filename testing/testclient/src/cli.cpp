@@ -7,9 +7,9 @@
 #include "cli.h"
 
 #include <google/protobuf/util/time_util.h>
-#include <zmq.h>
 
 #include <string>
+#include <zmq.hpp>
 #include <zmq_addon.hpp>
 
 #include "SimpleBroker.h"
@@ -35,7 +35,7 @@ void CLI::requestLogin(const std::string& username,
   toZmqMsg(request, msg);
 
   if (mBroker) {
-    mBroker->sendMsg(msg);
+    mBroker->sendMsg(std::move(msg));
   }
 }
 

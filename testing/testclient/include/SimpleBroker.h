@@ -7,11 +7,11 @@
 #ifndef TEST_CLIENT_SIMPLE_BROKER_H
 #define TEST_CLIENT_SIMPLE_BROKER_H
 
-#include <zmq.h>
-
 #include <atomic>
 #include <functional>
+#include <queue>
 #include <thread>
+#include <zmq.hpp>
 #include <zmq_addon.hpp>
 
 #include "Login.pb.h"
@@ -27,7 +27,11 @@ class SimpleBroker {
 
   SimpleBroker();
 
-  void sendMsg(const zmq::message_t& msg);
+  /*
+   * Sneds the given message, note this transfers ownership of the
+   * zmq::message.
+   */
+  void sendMsg(zmq::message_t&& msg);
 
   void registerLoginResponseCallback(const LoginResponseCallback& callback);
 
@@ -39,6 +43,8 @@ class SimpleBroker {
   std::thread mRecvThread;
   std::thread mSendThread;
   std::atomic<bool> mExitSignal;
+  std::queue<zmq::message_t> mWorkItems;
+  std::mutex mWorkLock;
 
   LoginResponseCallback mLoginResponseCallback;
 

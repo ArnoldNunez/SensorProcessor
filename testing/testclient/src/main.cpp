@@ -26,8 +26,19 @@ int main(int argc, char* argv[]) {
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  int major = 0;
+  int minor = 0;
+  int patch = 0;
+  zmq_version(&major, &minor, &patch);
+
+  std::cout << "Using ZMQ: " << std::to_string(major) << "."
+            << std::to_string(minor) << "." << std::to_string(patch)
+            << std::endl;
+
   TestClient::SimpleBroker broker;
   TestClient::CLI cli(&broker);
+
+  broker.startComms();
 
   std::string commands = R"(=== Commands ===
 login: Send login request
