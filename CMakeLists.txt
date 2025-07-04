@@ -22,6 +22,7 @@ set(SRCS src/main.cpp
          src/SessionService.cpp
 
          # Generated
+         generated/BaseMessages.pb.cc
          generated/addressbook.pb.cc
          generated/Sensor.pb.cc
          generated/SensorType.pb.cc
@@ -45,6 +46,7 @@ set(HDRS include/CoreApplication.h
          include/SessionService.h
 
          # Generated
+         generated/BaseMessages.pb.h
          generated/addressbook.pb.h
          generated/Sensor.pb.h
          generated/SensorType.pb.h

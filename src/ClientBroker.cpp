@@ -11,6 +11,7 @@
 #include <thread>
 #include <zmq_addon.hpp>
 
+#include "BaseMessages.pb.h"
 #include "CoreApplication.h"
 #include "EventBus.h"
 #include "SineWaveSensor.h"
@@ -277,6 +278,10 @@ void ClientBroker::receiveWork() {
       if (result) {
         std::cout << "ClientBroker:: received message" << std::endl;
         // eventBus->processMessage(p);
+        CoreServices::Command request;
+        if (request.ParseFromArray(message.data(), message.size())) {
+          std::cout << request.DebugString() << std::endl;
+        }
       }
     }
   }

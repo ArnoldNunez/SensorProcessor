@@ -7,10 +7,9 @@
 #ifndef TEST_CLIENT_CLI_H
 #define TEST_CLIENT_CLI_H
 
+#include <iostream>
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
-
-#include "Login.pb.h"
 
 namespace TestClient {
 class SimpleBroker;

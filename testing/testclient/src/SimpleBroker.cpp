@@ -6,6 +6,8 @@
 
 #include "SimpleBroker.h"
 
+#include "BaseMessages.pb.h"
+
 namespace TestClient {
 //-----
 SimpleBroker::SimpleBroker()
@@ -67,6 +69,8 @@ void SimpleBroker::recvWork() {
       ZMQ_POLLIN,  // Eevents to poll on
       0            // Events returned after poll
   }};
+
+  CoreServices::Response response;
   long long elapsedTime = 0;
   while (!mExitSignal.load(std::memory_order_relaxed)) {
     zmq::message_t message;
@@ -78,8 +82,9 @@ void SimpleBroker::recvWork() {
       zmq::recv_result_t result = recvSock.recv(message, zmq::recv_flags::none);
       if (result) {
         // Process message
-
-        std::cout << "Received message" << std::endl;
+        if (response.ParseFromArray(message.data(), message.size())) {
+          std::cout << response.DebugString() << std::endl;
+        }
       }
     }
 

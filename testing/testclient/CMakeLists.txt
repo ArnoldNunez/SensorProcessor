@@ -13,6 +13,7 @@ set(SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/src/SimpleBroker.cpp
 
          # Generated
+         ${CMAKE_SOURCE_DIR}/generated/BaseMessages.pb.cc
          ${CMAKE_SOURCE_DIR}/generated/addressbook.pb.cc
          ${CMAKE_SOURCE_DIR}/generated/Sensor.pb.cc
          ${CMAKE_SOURCE_DIR}/generated/SensorType.pb.cc
@@ -27,6 +28,7 @@ set(HDRS ${CMAKE_CURRENT_SOURCE_DIR}/include/cli.h
          ${CMAKE_CURRENT_SOURCE_DIR}/include/SimpleBroker.h
 
          # Generated
+         ${CMAKE_SOURCE_DIR}/generated/BaseMessages.pb.h
          ${CMAKE_SOURCE_DIR}/generated/addressbook.pb.h
          ${CMAKE_SOURCE_DIR}/generated/Sensor.pb.h
          ${CMAKE_SOURCE_DIR}/generated/SensorType.pb.h
