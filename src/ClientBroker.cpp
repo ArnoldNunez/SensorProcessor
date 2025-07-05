@@ -20,8 +20,9 @@
 namespace CoreMessaging {
 
 //-----
-ClientBroker::ClientBroker()
-    : mClientConfig(),
+ClientBroker::ClientBroker(EventBus* eventBus)
+    : mEventBus(eventBus),
+      mClientConfig(),
       mServerConfig(),
       mRecvThread(),
       mSendThread(),
@@ -64,7 +65,7 @@ void ClientBroker::testClientPolling(EventBus* eventBus) {
         p.ParseFromArray(message.data(), message.size());
         std::cout << p.DebugString() << std::endl;
 
-        eventBus->processMessage(p);
+        // eventBus->processMessage(p);
       }
     }
 
@@ -179,7 +180,7 @@ void ClientBroker::testClientPollingPull(EventBus* eventBus) {
         p.ParseFromArray(message.data(), message.size());
         std::cout << p.DebugString() << std::endl;
 
-        eventBus->processMessage(p);
+        // eventBus->processMessage(p);
 
         std::string personBinary;
         p.SerializeToString(&personBinary);
@@ -226,6 +227,13 @@ void ClientBroker::testPublishSensorValue(
 
 //-----
 void ClientBroker::startCommunication() {
+  if (mEventBus == nullptr) {
+    std::cout << "ClientBroker::startCommunication - failed - no eventbus "
+                 "instance available."
+              << std::endl;
+    return;
+  }
+
   mRecvThread = std::thread(&ClientBroker::receiveWork, this);
   mSendThread = std::thread(&ClientBroker::sendWork, this);
 
@@ -277,10 +285,9 @@ void ClientBroker::receiveWork() {
       zmq::recv_result_t result = recvSock.recv(message, zmq::recv_flags::none);
       if (result) {
         std::cout << "ClientBroker:: received message" << std::endl;
-        // eventBus->processMessage(p);
         CoreServices::Command request;
         if (request.ParseFromArray(message.data(), message.size())) {
-          std::cout << request.DebugString() << std::endl;
+          mEventBus->distribute(request);
         }
       }
     }

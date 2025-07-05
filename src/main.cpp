@@ -56,12 +56,11 @@ int main(int argc, char* argv[]) {
 
   // Initialize Core Application Dependencies
   auto applicationEventBus = std::make_unique<CoreMessaging::EventBus>();
-  auto clientBroker = std::make_unique<CoreMessaging::ClientBroker>();
+  auto clientBroker =
+      std::make_unique<CoreMessaging::ClientBroker>(applicationEventBus.get());
   auto sessionService = std::make_unique<CoreServices::SessionService>(
       applicationEventBus.get(), clientBroker.get());
 
-  // Inject depenauto sessionService =
-  //     std::make_unique<CoreServices::SessionService>(applicationEventBus.get());dencies
   auto coreApplication = std::make_unique<CoreApplication>(
       appConfig, applicationEventBus, clientBroker);
 

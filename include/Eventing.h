@@ -10,52 +10,54 @@
 #include <thread>
 #include <vector>
 
-#include "addressbook.pb.h"
+#include "Login.pb.h"
 
 namespace CoreMessaging {
-/**
- * Enumeration of all the supported event ids.
- */
-enum EventID {
-  UNKNOWN = 0,
-  CLIENT_CONNECT_REQUEST = 1,
-  LOGIN_REQUEST = 2,
-  LOGIN_RESPONSE = 3
-};
 
 /**
  * Base class for core messaging events.
  */
 class IEvent {
  public:
+  /**
+   * Destructor
+   */
   virtual ~IEvent() {}
 
-  int getEventId() const { return mEventID; }
-
  protected:
-  IEvent() : mEventID(0) {}
-  IEvent(int eventId) : mEventID(eventId) {}
-
- private:
-  int mEventID;
+  /**
+   * Constructor.
+   */
+  IEvent() {}
 };
 
 /**
  * Event for a login request.
  */
-class LoginRequest : public IEvent {
+class LoginRequestEvent : public IEvent {
  public:
-  LoginRequest() : IEvent(), mCredentials() {}
-  LoginRequest(EventID eventId) : IEvent(eventId), mCredentials() {}
-  LoginRequest(EventID eventId, const tutorial::Person& credentials)
-      : IEvent(eventId), mCredentials(credentials) {}
+  /**
+   * Constructor.
+   * \param data The login request data.
+   */
+  LoginRequestEvent(const CoreServices::LoginRequest& data)
+      : IEvent(), mData(data) {}
 
-  ~LoginRequest() {}
+  /**
+   * Destructor.
+   */
+  ~LoginRequestEvent() {}
 
-  const tutorial::Person& getCredentials() const { return mCredentials; }
+  /**
+   * Get the event data.
+   */
+  const CoreServices::LoginRequest& data() const { return mData; }
 
  private:
-  tutorial::Person mCredentials;
+  /**
+   * The event data.
+   */
+  CoreServices::LoginRequest mData;
 };
 
 /**
@@ -113,7 +115,7 @@ class LoginRequestHandler : public EventHandler {
    * Constructor.
    * \param id    The id of to give this handler.
    */
-  LoginRequestHandler(HandlerId id) : EventHandler(0) {}
+  LoginRequestHandler(HandlerId id) : EventHandler(id) {}
 
   /**
    * Destructor.
@@ -121,13 +123,17 @@ class LoginRequestHandler : public EventHandler {
   virtual ~LoginRequestHandler() {}
 
   /**
+   * Handler for an Event
+   */
+  virtual void onEvent(const IEvent& event) override {
+    onEvent(static_cast<const LoginRequestEvent&>(event));
+  };
+
+  /**
    * Method triggered when a \c LoginRequest event is received.
    * \param event The event received.
    */
-  virtual void onEvent(const LoginRequest& event) {
-    std::cout << "LoginRequestHandler::onEvent "
-              << std::to_string(event.getEventId()) << std::endl;
-  }
+  virtual void onEvent(const LoginRequestEvent& event) = 0;
 };
 }  // namespace CoreMessaging
 

@@ -29,7 +29,7 @@ class ClientBroker {
   /**
    * Constructor
    */
-  ClientBroker();
+  ClientBroker(EventBus* eventBus);
 
   /**
    * Destructor
@@ -57,8 +57,8 @@ class ClientBroker {
   void setConfiguration(const AppConfig& config);
 
  private:
-  /// @brief Contains the tasks required to be executed by this broker.
-  //   std::queue<std::function<void()>> mClientMessagingTasks;
+  /// @brief Reference to the client broker.
+  EventBus* mEventBus;
 
   /// @brief Configuration information for the client communication.
   AppConfig::NodeConfig mClientConfig;

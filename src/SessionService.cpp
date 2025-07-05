@@ -26,16 +26,17 @@ SessionService::SessionService(CoreMessaging::EventBus* eventBus,
 SessionService::~SessionService() {}
 
 //-----
-void SessionService::onEvent(const CoreMessaging::LoginRequest& event) {
+void SessionService::onEvent(const CoreMessaging::LoginRequestEvent& event) {
   std::cout << "=== SessionService::onEvent ===" << std::endl;
-
+  std::cout << event.data().DebugString() << std::endl;
   std::cout << "===============================" << std::endl;
 }
 
 //-----
 void SessionService::subscribeToEvents() {
   // Subscribe to the login request message
-  mEventBus->Subscribe(CoreMessaging::EventID::LOGIN_REQUEST, this);
+  mEventBus->subscribe(CoreServices::CORE_COMMAND_ID::COMMAND_ID_LOGIN_REQUEST,
+                       this);
 }
 
 }  // namespace CoreServices

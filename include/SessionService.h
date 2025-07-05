@@ -38,7 +38,7 @@ class SessionService : public IService,
    * Handler for the login request message.
    * \param event The login request event.
    */
-  virtual void onEvent(const CoreMessaging::LoginRequest& event) override;
+  virtual void onEvent(const CoreMessaging::LoginRequestEvent& event) override;
 
  private:
   // Identifier assigned to this subscriber of the event bus.

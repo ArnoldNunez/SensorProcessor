@@ -46,15 +46,6 @@ void CoreApplication::start() {
     return;
   }
 
-  // Register message types with the event bus
-  mEventBus->registerTypeWithEvent(typeid(tutorial::Person),
-                                   CoreMessaging::EventID::LOGIN_REQUEST);
-  mEventBus->registerTypeWithEvent(typeid(CoreServices::LoginRequest),
-                                   CoreMessaging::EventID::LOGIN_REQUEST);
-
-  // mClientBroker->testClientPolling(mEventBus.get());
-  // mClientBroker->testClientPollingPull(mEventBus.get());
-  // mClientBroker->testClientPush();
   mClientBroker->startCommunication();
 }
 
